@@ -8,4 +8,5 @@ class Review(models.Model):
   pub_date = models.DateTimeField('date published')
   author = models.CharField(max_length=64)
   rating = models.IntegerField()
+  votes = models.IntegerField(default=0)
   review_content = models.TextField()
