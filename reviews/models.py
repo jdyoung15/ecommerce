@@ -10,3 +10,6 @@ class Review(models.Model):
   rating = models.IntegerField()
   votes = models.IntegerField(default=0)
   review_content = models.TextField()
+
+  class Meta:
+    ordering = ['-votes']

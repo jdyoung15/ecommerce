@@ -31,7 +31,7 @@
   Reviews:
   {% for review in item.review_set.all %}
     <li>
-      <p>{{ review.rating }} stars   Date published: {{ review.pub_date }}   Author: {{ review.author }}</p>
+      <p>{{ review.rating }} stars   Date published: {{ review.pub_date }}   Author: {{ review.author }}  {{ review.votes }} votes</p>
       <p>{{ review.review_content }}</p>
     </li>
   {% endfor %}
