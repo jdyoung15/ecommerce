@@ -4,6 +4,29 @@
   <li>{{ item.msrp}}</li>
   <li>{{ item.description}}</li>
 </ul>
+<br>
+<br>
+<ul>
+  Q and A:
+  {% for question in item.question_set.all %}
+    <li>
+      <p>{{ question.votes }} votes Date published: {{ question.pub_date }} </p>
+      <p>{{ question.question_content }}</p>
+      <ul>
+      {% for answer in question.answer_set.all %}
+        <li>
+          <p>{{ answer.votes }} votes Date published: {{ question.pub_date }}  Author: {{ answer.author }} </p>
+          <p>{{ answer.answer_content }}</p>
+        </li>
+        <br>
+      {% endfor %}
+      </ul>
+    </li>
+    <br>
+  {% endfor %}
+</ul>
+<br>
+<br>
 <ul>
   Reviews:
   {% for review in item.review_set.all %}
