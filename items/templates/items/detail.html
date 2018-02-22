@@ -1,8 +1,9 @@
 <ul>
   <li>{{ item.name }}</li>
-  <li>{{ item.price}}</li>
-  <li>{{ item.msrp}}</li>
-  <li>{{ item.description}}</li>
+  <li>${{ item.price}}</li>
+  <li>MSRP: ${{ item.msrp}}</li>
+  <li>Description: {{ item.description}}</li>
+  <li>Qty remaining: {{ item.inventoryitem_set.first.qty }}</li>
 </ul>
 <br>
 <br>

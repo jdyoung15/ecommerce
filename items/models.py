@@ -8,3 +8,10 @@ class Item(models.Model):
   
   def __str__(self):
     return self.name
+
+class InventoryItem(models.Model):
+  item = models.ForeignKey(Item, on_delete=models.CASCADE)
+  qty = models.IntegerField()
+  
+  #def __str__(self):
+  #  return item.name
