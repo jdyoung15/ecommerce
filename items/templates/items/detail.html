@@ -5,8 +5,19 @@
   <li>Description: {{ item.description}}</li>
   <li>Qty remaining: {{ item.inventoryitem_set.first.qty }}</li>
 </ul>
+
 <br>
 <br>
+
+<form action="{% url 'items:detail' item.id %}" method="post">
+{% csrf_token %}
+Qty: <input type="number" />
+<input type="submit" value="Add to cart" />
+</form>
+
+<br>
+<br>
+
 <ul>
   Q and A:
   {% for question in item.question_set.all %}
@@ -26,8 +37,10 @@
     <br>
   {% endfor %}
 </ul>
+
 <br>
 <br>
+
 <ul>
   Reviews:
   {% for review in item.review_set.all %}
