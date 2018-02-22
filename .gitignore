@@ -87,3 +87,14 @@ local_settings.py
 
 .env
 db.sqlite3
+
+
+### Vim ###
+*~
+*.swp
+*.swo
+
+**/.DS_Store
+.sass-cache
+.sass-cache/*
+*.map

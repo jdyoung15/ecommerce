@@ -1,0 +1,11 @@
+<ul>
+  Cart:
+  {% for cartitem in cart.cartitem_set.all %}
+    <li>
+      <p>{{ cartitem.item.name }}&nbsp;&nbsp;Qty: {{ cartitem.qty }}&nbsp;&nbsp;${{ cartitem.item.price}}</p>
+    </li>
+  {% endfor %}
+</ul>
+
+<br>
+<br>
