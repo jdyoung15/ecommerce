@@ -33,7 +33,14 @@ def add(request, item_id):
     cart.save()
     request.session['cart_id'] = cart.id
 
-  cart_item = CartItem(cart_id=cart.id, item_id=item_id, qty=request.POST["qty"])
+  # TODO ensure only one cart item per cart and item combo
+  cart_item = CartItem.objects.filter(cart_id=cart.id, item_id=item_id).first()
+  if cart_item:
+    # item already in cart
+    cart_item.qty = request.POST['qty']
+  else:
+    cart_item = CartItem(cart_id=cart.id, item_id=item_id, qty=request.POST['qty'])
+
   cart_item.save()
 
   return HttpResponseRedirect(reverse('carts:detail', args=(cart.id,)))
