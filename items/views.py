@@ -10,12 +10,6 @@ class IndexView(generic.ListView):
   context_object_name = 'item_list'
 
   def get_queryset(self):
-    if 'cart_id' not in self.request.session:
-      self.request.session['cart_id'] = 0
-    self.request.session['cart_id'] += 1 
-    print("cart id: %d" % self.request.session['cart_id'])
-    print("session id: %s" % self.request.session.session_key)
-
     return Item.objects.order_by('name')
 
 #def index(request):

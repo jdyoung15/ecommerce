@@ -9,9 +9,9 @@
 <br>
 <br>
 
-<form action="{% url 'items:detail' item.id %}" method="post">
+<form action="{% url 'carts:add' item.id %}" method="post">
 {% csrf_token %}
-Qty: <input type="number" />
+Qty: <input type="number" name="qty" />
 <input type="submit" value="Add to cart" />
 </form>
 

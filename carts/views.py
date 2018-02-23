@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 
-from .models import Cart
+from .models import Cart, CartItem
 
 #class IndexView(generic.ListView):
 #  template_name = 'items/index.html'
@@ -25,10 +25,24 @@ from .models import Cart
 #  }
 #  return render(request, 'items/index.html', context)
 
+def add(request, item_id):
+  if 'cart_id' in request.session:
+    cart = get_object_or_404(Cart, pk=request.session['cart_id'])
+  else:
+    cart = Cart()
+    cart.save()
+    request.session['cart_id'] = cart.id
+
+  cart_item = CartItem(cart_id=cart.id, item_id=item_id, qty=request.POST["qty"])
+  cart_item.save()
+
+  return HttpResponseRedirect(reverse('carts:detail', args=(cart.id,)))
+
 
 class DetailView(generic.DetailView):
   model = Cart 
   template_name = 'carts/detail.html'
+
 
 #def detail(request, item_id):
 #  item = get_object_or_404(Item, pk=item_id)
