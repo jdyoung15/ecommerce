@@ -30,6 +30,6 @@ def create_or_update_cart_item(cart_id, item_id, qty):
   cart_item.save()
 
 
-class DetailView(generic.DetailView):
-  model = Cart 
-  template_name = 'carts/detail.html'
+def view_cart(request):
+  cart = create_or_retrieve_cart(request)
+  return render(request, 'carts/detail.html', {'cart': cart})
