@@ -21,7 +21,7 @@ class ItemDisplay(generic.DetailView):
 
   def get_context_data(self, **kwargs):
     context = super(ItemDisplay, self).get_context_data(**kwargs)
-    context['qty_form'] = QtyForm()
+    context['qty_form'] = QtyForm(item_id=self.get_object().id)
     return context
 
 

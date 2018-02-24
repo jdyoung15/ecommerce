@@ -4,7 +4,6 @@ from django.urls import reverse
 from django.views import generic
 
 from .models import Cart, CartItem
-from items.forms import QtyForm
 
 def add_to_cart(request, item_id):
   cart = create_or_retrieve_cart(request)
