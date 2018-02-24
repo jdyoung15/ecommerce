@@ -5,7 +5,7 @@ from django.views import generic, View
 
 from .models import Item
 from .forms import QtyForm 
-from carts.views import create_or_retrieve_cart, create_or_update_cart_item
+from carts.views import add_to_cart
 
 class IndexView(generic.ListView):
   template_name = 'items/index.html'
@@ -43,8 +43,7 @@ class ItemAdd(generic.detail.SingleObjectMixin, generic.FormView):
     return data
 
   def get_success_url(self):
-    cart = create_or_retrieve_cart(self.request)
-    create_or_update_cart_item(cart.id, self.object.pk, self.request.POST['qty'])
+    cart = add_to_cart(self.request, self.object.pk)
     return reverse('carts:detail', kwargs={'pk': cart.id})
 
 
