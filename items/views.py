@@ -38,13 +38,14 @@ class ItemAdd(generic.detail.SingleObjectMixin, generic.FormView):
     return self.form_class(data=self.request.POST, item_id=self.object.pk)
 
   def get_context_data(self, **kwargs):
-    data = super(ItemAdd, self).get_context_data(**kwargs)
-    data['qty_form'] = data.get('form')
-    return data
+    context = super(ItemAdd, self).get_context_data(**kwargs)
+    context['qty_form'] = context.get('form')
+    context['added_cart_msg'] = 'Added to cart'
+    return context 
 
   def get_success_url(self):
-    cart = add_to_cart(self.request, self.object.pk)
-    return reverse('carts:detail', kwargs={'pk': cart.id})
+    add_to_cart(self.request, self.object.pk)
+    return reverse('items:detail', kwargs={'pk': self.object.pk})
 
 
 class ItemDetail(View):

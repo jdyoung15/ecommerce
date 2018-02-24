@@ -11,7 +11,6 @@ def add_to_cart(request, item_id):
   if 'cart_id' not in request.session:
     request.session['cart_id'] = cart.id
   create_or_update_cart_item(cart.id, item_id, request.POST['qty'])
-  return cart
 
 
 def create_or_retrieve_cart(request):
