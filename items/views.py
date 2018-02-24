@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.views import generic
 
 from .models import Item
+from .forms import QtyForm 
 
 class IndexView(generic.ListView):
   template_name = 'items/index.html'
@@ -23,6 +24,12 @@ class IndexView(generic.ListView):
 class DetailView(generic.DetailView):
   model = Item
   template_name = 'items/detail.html'
+
+  def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+    # Add in a QuerySet of all the books
+    context['qty_form'] = QtyForm()
+    return context 
 
 #def detail(request, item_id):
 #  item = get_object_or_404(Item, pk=item_id)

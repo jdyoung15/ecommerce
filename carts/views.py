@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.views import generic
 
 from .models import Cart, CartItem
+from items.forms import QtyForm
 
 #class IndexView(generic.ListView):
 #  template_name = 'items/index.html'
@@ -26,6 +27,10 @@ from .models import Cart, CartItem
 #  return render(request, 'items/index.html', context)
 
 def add(request, item_id):
+  qty_form = QtyForm(data=request.POST, item_id=item_id)
+  if not qty_form.is_valid():
+    return HttpResponseRedirect(reverse('items:detail', args=(item_id,)))
+
   if 'cart_id' in request.session:
     cart = get_object_or_404(Cart, pk=request.session['cart_id'])
   else:
@@ -33,7 +38,6 @@ def add(request, item_id):
     cart.save()
     request.session['cart_id'] = cart.id
 
-  # TODO ensure only one cart item per cart and item combo
   cart_item = CartItem.objects.filter(cart_id=cart.id, item_id=item_id).first()
   if cart_item:
     # item already in cart
