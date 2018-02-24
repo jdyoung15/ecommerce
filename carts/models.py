@@ -15,3 +15,7 @@ class CartItem(models.Model):
 
   def __str__(self):
     return 'Cart {}, item {}, qty {}'.format(self.cart.id, self.item.id, self.qty)
+
+  class Meta:
+    unique_together = ('cart', 'item')
+
