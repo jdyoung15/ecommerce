@@ -2,10 +2,12 @@
   Cart:
   {% for cartitem in cart.cartitem_set.all %}
     <li>
-      <p>{{ cartitem.item.name }}&nbsp;&nbsp;Qty: {{ cartitem.qty }}&nbsp;&nbsp;${{ cartitem.item.price}}</p>
+      <p>{{ cartitem.item.name }}&nbsp;&nbsp;Qty: {{ cartitem.qty }}&nbsp;&nbsp;${{ cartitem.item.price}}&nbsp;&nbsp;Subtotal: ${{ cartitem.subtotal }}</p>
     </li>
   {% endfor %}
+  Total: ${{ cart.total }}
 </ul>
+  
 
 <br>
 <br>

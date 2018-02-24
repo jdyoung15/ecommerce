@@ -5,6 +5,9 @@ from items.models import Item
 class Cart(models.Model):
   user = models.IntegerField(blank=True, null=True)
 
+  def total(self):
+    return sum([cartitem.subtotal() for cartitem in self.cartitem_set.all()])
+
   def __str__(self):
     return 'Cart {}'.format(self.id)
 
@@ -15,6 +18,9 @@ class CartItem(models.Model):
 
   def __str__(self):
     return 'Cart {}, item {}, qty {}'.format(self.cart.id, self.item.id, self.qty)
+
+  def subtotal(self):
+    return self.qty * self.item.price
 
   class Meta:
     unique_together = ('cart', 'item')
