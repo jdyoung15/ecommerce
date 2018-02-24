@@ -3,7 +3,6 @@ from django import forms
 from .models import InventoryItem
 
 class QtyForm(forms.Form):
-  #qty = forms.IntegerField(label='Your name', max_length=100)
   qty = forms.IntegerField(min_value=0)
 
   def __init__(self, *args, **kwargs):
@@ -15,6 +14,6 @@ class QtyForm(forms.Form):
     item_id = self.item_id
     inventory_item = InventoryItem.objects.filter(item_id=item_id).first()
     if qty > inventory_item.qty:
-      raise forms.ValidationError("Qty cannot exceed 100!")
+      raise forms.ValidationError("Qty cannot exceed {}!".format(inventory_item.qty))
 
     return qty 

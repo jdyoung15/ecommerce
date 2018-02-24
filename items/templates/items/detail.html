@@ -9,7 +9,7 @@
 <br>
 <br>
 
-<form action="{% url 'carts:add' item.id %}" method="post">
+<form action="{% url 'items:detail' item.id %}" method="post">
 {% csrf_token %}
 <!-- Qty: <input type="number" name="qty" /> -->
 {{ qty_form }}
