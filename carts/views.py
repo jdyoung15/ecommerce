@@ -39,24 +39,24 @@ class CartDisplay(generic.DetailView):
   model = Cart 
   template_name = 'carts/detail.html'
 
-  def get_context_data(self, **kwargs):
-    context = super(CartDisplay, self).get_context_data(**kwargs)
-    #context['qty_form'] = QtyForm(item_id=self.get_object().id)
-    #context['qty_form'] = QtyForm(item_id=1)
-    context['qty_forms'] = self.find_qty_forms()
-    return context
+  #def get_context_data(self, **kwargs):
+  #  context = super(CartDisplay, self).get_context_data(**kwargs)
+  #  #context['qty_form'] = QtyForm(item_id=self.get_object().id)
+  #  #context['qty_form'] = QtyForm(item_id=1)
+  #  context['qty_forms'] = self.find_qty_forms()
+  #  return context
 
-  def find_qty_forms(self):
-    qty_forms = {}
-    cart_items = CartItem.objects.filter(cart_id=self.get_object().id)
-    for cart_item in cart_items:
-      qty_form = QtyForm(item_id=cart_item.item_id, initial={'qty': cart_item.qty})
-      qty_forms[cart_item.id] = qty_form
-    return qty_forms
+  #def find_qty_forms(self):
+  #  qty_forms = {}
+  #  cart_items = CartItem.objects.filter(cart_id=self.get_object().id)
+  #  for cart_item in cart_items:
+  #    qty_form = QtyForm(item_id=cart_item.item_id, initial={'qty': cart_item.qty})
+  #    qty_forms[cart_item.id] = qty_form
+  #  return qty_forms
 
-  @register.filter
-  def get_item(dictionary, key):
-    return dictionary.get(key)
+  #@register.filter
+  #def get_item(dictionary, key):
+  #  return dictionary.get(key)
 
 #class ItemAdd(generic.detail.SingleObjectMixin, generic.FormView):
 #  template_name = 'items/detail.html'
@@ -79,7 +79,9 @@ class CartDisplay(generic.DetailView):
 #    add_to_cart(self.request, self.object.pk)
 #    return reverse('carts:view_cart')
 #
-#
+# <!--{{ qty_forms|get_item:cartitem.id }}-->
+
+
 class CartDetail(View):
 
   def get(self, request, *args, **kwargs):

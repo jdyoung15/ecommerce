@@ -8,7 +8,10 @@
       &nbsp;&nbsp;
 			<form action="{% url 'carts:cartitem_delete' cartitem.id %}" method="post">
         {% csrf_token %}
-        {{ qty_forms|get_item:cartitem.id }}
+        {{ cartitem.qty_form }}
+      </form>
+			<form action="{% url 'carts:cartitem_delete' cartitem.id %}" method="post">
+        {% csrf_token %}
         <input type="submit" value="Delete" />
       </form>
       </p>

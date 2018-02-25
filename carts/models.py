@@ -1,6 +1,7 @@
 from django.db import models
 
 from items.models import Item
+from items.forms import QtyForm
 
 class Cart(models.Model):
   user = models.IntegerField(blank=True, null=True)
@@ -21,6 +22,9 @@ class CartItem(models.Model):
 
   def subtotal(self):
     return self.qty * self.item.price
+
+  def qty_form(self):
+    return QtyForm(item_id=self.item_id, initial={'qty': self.qty})
 
   class Meta:
     unique_together = ('cart', 'item')
