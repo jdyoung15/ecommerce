@@ -40,7 +40,6 @@ class ItemAdd(generic.detail.SingleObjectMixin, generic.FormView):
   def get_context_data(self, **kwargs):
     context = super(ItemAdd, self).get_context_data(**kwargs)
     context['qty_form'] = context.get('form')
-    context['added_cart_msg'] = 'Added to cart'
     return context 
 
   def get_success_url(self):
