@@ -45,7 +45,7 @@ class ItemAdd(generic.detail.SingleObjectMixin, generic.FormView):
 
   def get_success_url(self):
     add_to_cart(self.request, self.object.pk)
-    return reverse('items:detail', kwargs={'pk': self.object.pk})
+    return reverse('carts:viewcart')
 
 
 class ItemDetail(View):
