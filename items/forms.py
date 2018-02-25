@@ -4,7 +4,7 @@ from .models import InventoryItem
 
 class QtyForm(forms.Form):
   
-  MIN_QTY = 0
+  MIN_QTY = 1
 
   def __init__(self, *args, **kwargs):
     self.item_id = kwargs.pop('item_id', None)
