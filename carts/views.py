@@ -50,15 +50,9 @@ class CartDisplay(generic.DetailView):
     qty_forms = {}
     cart_items = CartItem.objects.filter(cart_id=self.get_object().id)
     for cart_item in cart_items:
-      qty_form = QtyForm(item_id=cart_item.item_id)
+      qty_form = QtyForm(item_id=cart_item.item_id, initial={'qty': cart_item.qty})
       qty_forms[cart_item.id] = qty_form
     return qty_forms
-      
-    # dict = {}
-    # get cart items
-    # for each cart item
-    #   put {cartitem.id: caritem.qty}
-    # return dict
 
   @register.filter
   def get_item(dictionary, key):
@@ -90,7 +84,8 @@ class CartDetail(View):
 
   def get(self, request, *args, **kwargs):
       view = CartDisplay.as_view()
-      return view(request, *args, pk=7, **kwargs)
+      cart = create_or_retrieve_cart(request)
+      return view(request, *args, pk=cart.id, **kwargs)
 
   #def post(self, request, *args, **kwargs):
   #    view = ItemAdd.as_view()
