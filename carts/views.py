@@ -38,4 +38,4 @@ class CartItemDelete(generic.DeleteView):
   model = CartItem
   
   def get_success_url(self):
-    return reverse('carts:viewcart')
+    return reverse('carts:view_cart')
