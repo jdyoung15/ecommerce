@@ -32,3 +32,10 @@ def create_or_update_cart_item(cart_id, item_id, qty):
 def view_cart(request):
   cart = create_or_retrieve_cart(request)
   return render(request, 'carts/detail.html', {'cart': cart})
+
+
+class CartItemDelete(generic.DeleteView):
+  model = CartItem
+  
+  def get_success_url(self):
+    return reverse('carts:viewcart')

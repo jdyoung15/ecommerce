@@ -4,7 +4,13 @@
   Cart:
   {% for cartitem in cart.cartitem_set.all %}
     <li>
-      <p>{{ cartitem.item.name }}&nbsp;&nbsp;Qty: {{ cartitem.qty }}&nbsp;&nbsp;${{ cartitem.item.price}}&nbsp;&nbsp;Subtotal: ${{ cartitem.subtotal }}</p>
+      <p>{{ cartitem.item.name }}&nbsp;&nbsp;Qty: {{ cartitem.qty }}&nbsp;&nbsp;${{ cartitem.item.price}}&nbsp;&nbsp;Subtotal: ${{ cartitem.subtotal }}
+      &nbsp;&nbsp;
+			<form action="{% url 'carts:cartitem_delete' cartitem.id %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Delete" />
+      </form>
+      </p>
     </li>
   {% endfor %}
   Total: ${{ cart.total }}
