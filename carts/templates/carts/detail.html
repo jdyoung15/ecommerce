@@ -4,7 +4,7 @@
   Cart:
   {% for cartitem in cart.cartitem_set.all %}
     <li>
-      <p>{{ cartitem.item.name }}&nbsp;&nbsp;Qty: {{ cartitem.qty }}&nbsp;&nbsp;${{ cartitem.item.price}}&nbsp;&nbsp;Subtotal: ${{ cartitem.subtotal }}
+      <p><a href="{% url 'items:detail' cartitem.item.id %}">{{ cartitem.item.name }}</a>&nbsp;&nbsp;Qty: {{ cartitem.qty }}&nbsp;&nbsp;${{ cartitem.item.price}}&nbsp;&nbsp;Subtotal: ${{ cartitem.subtotal }}
       &nbsp;&nbsp;
 			<form action="{% url 'carts:update_cart' cartitem.id %}" method="post">
         {% csrf_token %}
