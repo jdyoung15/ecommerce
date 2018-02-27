@@ -5,7 +5,7 @@ from django.views import generic, View
 from django.template.defaulttags import register
 
 from .models import Cart, CartItem
-from items.forms import QtyForm
+from .forms import CartItemQtyForm
 
 def add_to_cart(request, item_id):
   cart = create_or_retrieve_cart(request)
@@ -35,9 +35,9 @@ def view_cart(request):
   cart = create_or_retrieve_cart(request)
   return render(request, 'carts/detail.html', {'cart': cart})
 
-class CartDisplay(generic.DetailView):
-  model = Cart 
-  template_name = 'carts/detail.html'
+#class CartDisplay(generic.DetailView):
+#  model = Cart 
+#  template_name = 'carts/detail.html'
 
   #def get_context_data(self, **kwargs):
   #  context = super(CartDisplay, self).get_context_data(**kwargs)
@@ -57,41 +57,60 @@ class CartDisplay(generic.DetailView):
   #@register.filter
   #def get_item(dictionary, key):
   #  return dictionary.get(key)
+  #
+  # <!--{{ qty_forms|get_item:cartitem.id }}-->
 
-#class ItemAdd(generic.detail.SingleObjectMixin, generic.FormView):
-#  template_name = 'items/detail.html'
+def update_cart(request, cartitem_id):
+  cart = create_or_retrieve_cart(request)
+
+  # TODO verify that cartitem actually belongs to cart
+  # TODO: should really just be update_cart_item()
+  cart_item = CartItem.objects.filter(pk=cartitem_id, cart_id=cart.id).first()
+  if not cart_item:
+    # cart item does not belong to this cart 
+    return HttpResponseRedirect(reverse('carts:view_cart'))
+    
+  form = CartItemQtyForm(data=request.POST, item_id=cart_item.item.id)
+  if form.is_valid():
+    cart_item.qty = request.POST['qty']
+    cart_item.save()
+
+  return HttpResponseRedirect(reverse('carts:view_cart'))
+
+
+#class CartUpdate(generic.detail.SingleObjectMixin, generic.FormView):
+#  template_name = 'cart/detail.html'
 #  form_class = QtyForm
-#  model = Item
+#  model = Cart
 #
 #  def post(self, request, *args, **kwargs):
 #    self.object = self.get_object()
-#    return super(ItemAdd, self).post(request, *args, **kwargs)
+#    return super(CartUpdate, self).post(request, *args, **kwargs)
 #
 #  def get_form(self):
-#    return self.form_class(data=self.request.POST, item_id=self.object.pk)
+#    return self.form_class(data=self.request.POST, item_id=self.request.POST['item_id'])
 #
-#  def get_context_data(self, **kwargs):
-#    context = super(ItemAdd, self).get_context_data(**kwargs)
-#    context['qty_form'] = context.get('form')
-#    return context 
+#  #def get_context_data(self, **kwargs):
+#  #  context = super(ItemAdd, self).get_context_data(**kwargs)
+#  #  context['qty_form'] = context.get('form')
+#  #  return context 
 #
 #  def get_success_url(self):
-#    add_to_cart(self.request, self.object.pk)
+#    create_or_update_cart_item(self.object.pk, self.request.POST['item_id'], self.request.POST['qty'])
 #    return reverse('carts:view_cart')
 #
-# <!--{{ qty_forms|get_item:cartitem.id }}-->
-
-
-class CartDetail(View):
-
-  def get(self, request, *args, **kwargs):
-      view = CartDisplay.as_view()
-      cart = create_or_retrieve_cart(request)
-      return view(request, *args, pk=cart.id, **kwargs)
-
-  #def post(self, request, *args, **kwargs):
-  #    view = ItemAdd.as_view()
-  #    return view(request, *args, **kwargs)
+#
+#class CartDetail(View):
+#
+#  def get(self, request, *args, **kwargs):
+#    view = CartDisplay.as_view()
+#    cart = create_or_retrieve_cart(request)
+#    return view(request, *args, pk=cart.id, **kwargs)
+#
+#  def post(self, request, *args, **kwargs):
+#    view = CartUpdate.as_view()
+#    cart = create_or_retrieve_cart(request)
+#    return view(request, *args, pk=cart.id, **kwargs)
 
 
 class CartItemDelete(generic.DeleteView):

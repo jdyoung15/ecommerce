@@ -6,9 +6,10 @@
     <li>
       <p>{{ cartitem.item.name }}&nbsp;&nbsp;Qty: {{ cartitem.qty }}&nbsp;&nbsp;${{ cartitem.item.price}}&nbsp;&nbsp;Subtotal: ${{ cartitem.subtotal }}
       &nbsp;&nbsp;
-			<form action="{% url 'carts:cartitem_delete' cartitem.id %}" method="post">
+			<form action="{% url 'carts:update_cart' cartitem.id %}" method="post">
         {% csrf_token %}
         {{ cartitem.qty_form }}
+        <input type="hidden" name="cartitem_id" value="{{ cartitem.id }}">
       </form>
 			<form action="{% url 'carts:cartitem_delete' cartitem.id %}" method="post">
         {% csrf_token %}
