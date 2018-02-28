@@ -2,6 +2,7 @@ from django.db import models
 
 class Item(models.Model):
   name = models.CharField(max_length=200)
+  # TODO change to PositiveIntegerField
   price = models.IntegerField()
   msrp = models.IntegerField()
   description = models.TextField()
@@ -11,6 +12,7 @@ class Item(models.Model):
 
 class InventoryItem(models.Model):
   item = models.ForeignKey(Item, on_delete=models.CASCADE)
+  # TODO change to PositiveIntegerField
   qty = models.IntegerField()
   
   def __str__(self):
