@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.urls import reverse
 
@@ -7,6 +8,20 @@ from items.models import Item, InventoryItem
 def create_test_item(item_name):
   return Item.objects.create(name=item_name, price=1, msrp=2, description="Test item description")
 
+class ItemModelTests(TestCase):
+
+  def test_negative_price(self):
+    test_item = Item(name="Test item", price=-1, msrp=2, description="Test item description")
+    self.assertRaises(ValidationError, test_item.full_clean)
+
+  def test_positive_msrp(self):
+    test_item = Item(name="Test item", price=1, msrp=2, description="Test item description")
+    test_item.full_clean()
+
+  def test_zero_qty(self):
+    test_item = create_test_item('Test item')
+    test_inventory_item = InventoryItem(item_id=test_item.id, qty=0)
+    test_inventory_item.full_clean()
   
 class ItemIndexViewTests(TestCase):
 

@@ -1,10 +1,10 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 
 class Item(models.Model):
   name = models.CharField(max_length=200)
-  # TODO change to PositiveIntegerField
-  price = models.IntegerField()
-  msrp = models.IntegerField()
+  price = models.PositiveIntegerField(validators=[MinValueValidator(0)])
+  msrp = models.PositiveIntegerField(validators=[MinValueValidator(0)])
   description = models.TextField()
   
   def __str__(self):
@@ -12,8 +12,7 @@ class Item(models.Model):
 
 class InventoryItem(models.Model):
   item = models.ForeignKey(Item, on_delete=models.CASCADE)
-  # TODO change to PositiveIntegerField
-  qty = models.IntegerField()
+  qty = models.PositiveIntegerField(validators=[MinValueValidator(0)])
   
   def __str__(self):
     return '{}, Qty {}'.format(self.item.name, self.qty)
