@@ -2,12 +2,13 @@ from django.db import models
 from django.core.validators import MinValueValidator
 
 from items.models import Item
+from customers.models import Customer
 #from .forms import CartItemQtyForm
 
 class Order(models.Model):
   shipping = models.PositiveIntegerField(validators=[MinValueValidator(0)])
   #user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
-  #customer = models.ForeignKey(Customer, on_delete=models.CASCADE, blank=True, null=True)
+  customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
 
   def total(self):
     return sum([orderitem.subtotal() for orderitem in self.orderitem_set.all()])

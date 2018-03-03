@@ -3,8 +3,36 @@
 <p>{% include 'carts/view_cart.html' %}</p>
 -->
 
+<p>Order:</p>
+
 <ul>
-  Order:
+  Customer info
+  <li>
+    <p>
+      {{ order.customer.email }}
+    </p>
+  </li>
+  <li>
+    <p>
+      Billing address:
+      <br>
+      {{ order.customer.billing_address }}
+    </p>
+  </li>
+  <li>
+    <p>
+      Shipping address:
+      <br>
+      {{ order.customer.shipping_address }}
+    </p>
+  </li>
+</ul>
+
+<br>
+<br>
+
+<ul>
+  Order info
   {% for orderitem in order.orderitem_set.all %}
     <li>
       <p>
@@ -15,8 +43,11 @@
   Total: ${{ order.total }}
 </ul>
 
+<br>
+<br>
+
 <ul>
-  Updates:
+  Order Updates:
   {% for orderupdate in order.orderupdate_set.all %}
     <li>
       <p>

@@ -36,9 +36,10 @@ ALLOWED_HOSTS = [
 INSTALLED_APPS = [
     'items.apps.ItemsConfig',
     'reviews.apps.ReviewsConfig',
-    'qa.apps.QaConfig',
+    'qa.apps.QaConfig', # TODO rename to QuestionsConfig
     'carts.apps.CartsConfig',
     'orders.apps.OrdersConfig',
+    'customers.apps.CustomersConfig',
     'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
