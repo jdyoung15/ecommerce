@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'reviews.apps.ReviewsConfig',
     'qa.apps.QaConfig',
     'carts.apps.CartsConfig',
+    'orders.apps.OrdersConfig',
     'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',

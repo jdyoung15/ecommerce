@@ -1,0 +1,27 @@
+<!--
+<p>{% include 'items/view_items.html' %}</p>
+<p>{% include 'carts/view_cart.html' %}</p>
+-->
+
+<ul>
+  Order:
+  {% for orderitem in order.orderitem_set.all %}
+    <li>
+      <p>
+      <a href="{% url 'items:detail' orderitem.item.id %}">{{ orderitem.item.name }}</a>&nbsp;&nbsp;Qty: {{ orderitem.qty }}&nbsp;&nbsp;${{ orderitem.price}}&nbsp;&nbsp;Subtotal: ${{ orderitem.subtotal }}
+      </p>
+    </li>
+  {% endfor %}
+  Total: ${{ order.total }}
+</ul>
+
+<ul>
+  Updates:
+  {% for orderupdate in order.orderupdate_set.all %}
+    <li>
+      <p>
+      {{ orderupdate.date }}&nbsp;&nbsp;Status: {{ orderupdate.get_status_display }}
+      </p>
+    </li>
+  {% endfor %}
+</ul>
