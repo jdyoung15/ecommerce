@@ -11,7 +11,7 @@ class Order(models.Model):
   customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
 
   def total(self):
-    return sum([orderitem.subtotal() for orderitem in self.orderitem_set.all()])
+    return sum([orderitem.subtotal() for orderitem in self.orderitem_set.all()]) + self.shipping
 
   def __str__(self):
     return 'Order {}'.format(self.id)
