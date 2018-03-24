@@ -30,32 +30,9 @@ def create_order_view(request):
     address_formset = AddressFormset(request.POST, queryset=Address.objects.none())
     if customer_form.is_valid() and address_formset.is_valid():
       # TODO update instead of create if existing
-      #shipping_address_form = address_formset[0]
-      #billing_address_form = address_formset[1]
-      #shipping_address = shipping_address_form.save()
-      #billing_address = billing_address_form.save()
-
-      #customer = customer_form.save(commit=False)
-      #customer.shipping_address_id = shipping_address.id
-      #customer.billing_address_id = billing_address.id
-      #customer.save()
       customer = create_customer_from_forms(customer_form, address_formset[0], address_formset[1])
-
-      #order = Order(shipping=calculate_shipping(), customer_id=customer.id)
-      #order.save()
-      #
-      #order_update = OrderUpdate(order_id=order.id, date=timezone.now())
-      #order_update.save()
-
-      #cart = create_or_retrieve_cart(request)
-      #for cart_item in cart.cartitem_set.all():
-      #  order_item = OrderItem(
-      #    order_id=order.id, item_id=cart_item.item_id, qty=cart_item.qty, price=cart_item.item.price)
-      #  order_item.save()
-
       cart = create_or_retrieve_cart(request)
       order = create_order(customer.id, cart.cartitem_set.all())
-
       return HttpResponseRedirect(reverse('orders:detail', args=(order.id,)))
 
   return render(
