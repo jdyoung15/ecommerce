@@ -7,6 +7,7 @@ from django.urls import reverse
 
 from .models import Order, OrderItem, OrderUpdate
 from customers.models import Customer, Address
+from customers.views import create_customer_from_forms
 from customers.forms import CustomerForm, AddressForm
 from carts.views import create_or_retrieve_cart
 
@@ -20,7 +21,7 @@ class OrderDisplay(generic.DetailView):
   #  return context
 
 
-def order_display(request):
+def create_order_view(request):
   customer_form = CustomerForm()
   AddressFormset = modelformset_factory(Address, extra=2, exclude=['is_default'])
   address_formset = AddressFormset(queryset=Address.objects.none())
@@ -29,27 +30,32 @@ def order_display(request):
     address_formset = AddressFormset(request.POST, queryset=Address.objects.none())
     if customer_form.is_valid() and address_formset.is_valid():
       # TODO update instead of create if existing
-      shipping_address_form = address_formset[0]
-      billing_address_form = address_formset[1]
-      shipping_address = shipping_address_form.save()
-      billing_address = billing_address_form.save()
+      #shipping_address_form = address_formset[0]
+      #billing_address_form = address_formset[1]
+      #shipping_address = shipping_address_form.save()
+      #billing_address = billing_address_form.save()
 
-      customer = customer_form.save(commit=False)
-      customer.shipping_address_id = shipping_address.id
-      customer.billing_address_id = billing_address.id
-      customer.save()
+      #customer = customer_form.save(commit=False)
+      #customer.shipping_address_id = shipping_address.id
+      #customer.billing_address_id = billing_address.id
+      #customer.save()
+      customer = create_customer_from_forms(customer_form, address_formset[0], address_formset[1])
 
-      order = Order(shipping=calculate_shipping(), customer_id=customer.id)
-      order.save()
-      
-      order_update = OrderUpdate(order_id=order.id, date=timezone.now())
-      order_update.save()
+      #order = Order(shipping=calculate_shipping(), customer_id=customer.id)
+      #order.save()
+      #
+      #order_update = OrderUpdate(order_id=order.id, date=timezone.now())
+      #order_update.save()
+
+      #cart = create_or_retrieve_cart(request)
+      #for cart_item in cart.cartitem_set.all():
+      #  order_item = OrderItem(
+      #    order_id=order.id, item_id=cart_item.item_id, qty=cart_item.qty, price=cart_item.item.price)
+      #  order_item.save()
 
       cart = create_or_retrieve_cart(request)
-      for cart_item in cart.cartitem_set.all():
-        order_item = OrderItem(
-          order_id=order.id, item_id=cart_item.item_id, qty=cart_item.qty, price=cart_item.item.price)
-        order_item.save()
+      order = create_order(customer.id, cart.cartitem_set.all())
+
       return HttpResponseRedirect(reverse('orders:detail', args=(order.id,)))
 
   return render(
@@ -58,7 +64,27 @@ def order_display(request):
     {'customer_form': customer_form, 'address_formset': address_formset,})
 
 
-# TODO complete
+def create_order(customer_id, cartitems):
+  order = Order(shipping=calculate_shipping(), customer_id=customer_id)
+  order.save()
+  
+  order_update = OrderUpdate(order_id=order.id, date=timezone.now())
+  order_update.save()
+
+  create_order_items(order.id, cartitems)
+
+  return order
+
+
+def create_order_items(order_id, cartitems):
+  for cart_item in cartitems:
+    order_item = OrderItem(
+      order_id=order_id, item_id=cart_item.item_id, qty=cart_item.qty, price=cart_item.item.price)
+    order_item.save()
+  
+
+
+# TODO implement 
 def calculate_shipping():
   return 5
 
